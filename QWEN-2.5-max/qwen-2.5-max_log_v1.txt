@@ -1,0 +1,136 @@
+========================================================================= test session starts =========================================================================
+platform darwin -- Python 3.12.3, pytest-8.3.5, pluggy-1.5.0
+cachedir: .pytest_cache
+plugins: Faker-37.1.0
+collected 9 items                                                                                                                                                     
+
+main.py::test_create_pet PASSED                                                                                                                                 [ 11%]
+main.py::test_update_pet FAILED                                                                                                                                 [ 22%]
+main.py::test_find_pets_by_status PASSED                                                                                                                        [ 33%]
+main.py::test_get_pet_by_id FAILED                                                                                                                              [ 44%]
+main.py::test_delete_pet PASSED                                                                                                                                 [ 55%]
+main.py::test_crud_operations FAILED                                                                                                                            [ 66%]
+main.py::test_invalid_pet_creation PASSED                                                                                                                       [ 77%]
+main.py::test_get_nonexistent_pet PASSED                                                                                                                        [ 88%]
+main.py::test_delete_nonexistent_pet FAILED                                                                                                                     [100%]
+
+============================================================================== FAILURES ===============================================================================
+___________________________________________________________________________ test_update_pet ___________________________________________________________________________
+
+    @pytest.mark.positive
+    def test_update_pet():
+        """Тест обновления питомца."""
+        pet_data = {
+            "id": 999,
+            "name": "UpdatedPet",
+            "category": {"id": 1, "name": "Cats"},
+            "photoUrls": ["http://example.com/photo"],
+            "tags": [{"id": 1, "name": "tag2"}],
+            "status": "sold"
+        }
+        response = update_pet(pet_data)
+>       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404]>.status_code
+
+main.py:63: AssertionError
+_________________________________________________________________________ test_get_pet_by_id __________________________________________________________________________
+
+    @pytest.mark.positive
+    def test_get_pet_by_id():
+        """Тест получения питомца по ID."""
+        pet_id = 999
+        response = get_pet_by_id(pet_id)
+>       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404]>.status_code
+
+main.py:78: AssertionError
+________________________________________________________________________ test_crud_operations _________________________________________________________________________
+
+    @pytest.mark.e2e
+    def test_crud_operations():
+        """End-to-end тест CRUD операций."""
+        # Создание питомца
+        pet_data = {
+            "id": 1000,
+            "name": "E2EPet",
+            "category": {"id": 1, "name": "Dogs"},
+            "photoUrls": ["http://example.com/photo"],
+            "tags": [{"id": 1, "name": "tag1"}],
+            "status": "available"
+        }
+        create_response = create_pet(pet_data)
+        assert create_response.status_code == 200
+        coverage.record_test_result("POST /pet", create_response.status_code)
+    
+        # Получение питомца
+        pet_id = pet_data["id"]
+        get_response = get_pet_by_id(pet_id)
+        assert get_response.status_code == 200
+        coverage.record_test_result("GET /pet/{petId}", get_response.status_code)
+    
+        # Обновление питомца
+        pet_data["name"] = "UpdatedE2EPet"
+        update_response = update_pet(pet_data)
+>       assert update_response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404]>.status_code
+
+main.py:115: AssertionError
+_____________________________________________________________________ test_delete_nonexistent_pet _____________________________________________________________________
+
+    @pytest.mark.negative
+    def test_delete_nonexistent_pet():
+        """Тест удаления несуществующего питомца."""
+        non_existent_pet_id = 999999
+        response = delete_pet(non_existent_pet_id)
+>       assert response.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <Response [200]>.status_code
+
+main.py:152: AssertionError
+========================================================================== warnings summary ===========================================================================
+main.py:36
+  /Users/kir/PycharmProjects/pub/main.py:36: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:51
+  /Users/kir/PycharmProjects/pub/main.py:51: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:66
+  /Users/kir/PycharmProjects/pub/main.py:66: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:73
+  /Users/kir/PycharmProjects/pub/main.py:73: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:81
+  /Users/kir/PycharmProjects/pub/main.py:81: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:90
+  /Users/kir/PycharmProjects/pub/main.py:90: PytestUnknownMarkWarning: Unknown pytest.mark.e2e - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.e2e
+
+main.py:124
+  /Users/kir/PycharmProjects/pub/main.py:124: PytestUnknownMarkWarning: Unknown pytest.mark.negative - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.negative
+
+main.py:139
+  /Users/kir/PycharmProjects/pub/main.py:139: PytestUnknownMarkWarning: Unknown pytest.mark.negative - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.negative
+
+main.py:147
+  /Users/kir/PycharmProjects/pub/main.py:147: PytestUnknownMarkWarning: Unknown pytest.mark.negative - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.negative
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================================================================= short test summary info =======================================================================
+FAILED main.py::test_update_pet - assert 404 == 200
+FAILED main.py::test_get_pet_by_id - assert 404 == 200
+FAILED main.py::test_crud_operations - assert 404 == 200
+FAILED main.py::test_delete_nonexistent_pet - assert 200 == 404
+============================================================== 4 failed, 5 passed, 9 warnings in 11.38s ===============================================================
