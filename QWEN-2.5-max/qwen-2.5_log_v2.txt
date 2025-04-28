@@ -1,0 +1,108 @@
+========================================================================= test session starts =========================================================================
+platform darwin -- Python 3.12.3, pytest-8.3.5, pluggy-1.5.0
+cachedir: .pytest_cache
+plugins: Faker-37.1.0
+collected 10 items                                                                                                                                                    
+
+main.py::test_create_pet PASSED                                                                                                                                 [ 10%]
+main.py::test_update_pet PASSED                                                                                                                                 [ 20%]
+main.py::test_find_pets_by_status PASSED                                                                                                                        [ 30%]
+main.py::test_get_pet_by_id PASSED                                                                                                                              [ 40%]
+main.py::test_delete_pet PASSED                                                                                                                                 [ 50%]
+main.py::test_invalid_pet_creation PASSED                                                                                                                       [ 60%]
+main.py::test_get_nonexistent_pet PASSED                                                                                                                        [ 70%]
+main.py::test_delete_nonexistent_pet FAILED                                                                                                                     [ 80%]
+main.py::test_upload_pet_image FAILED                                                                                                                           [ 90%]
+main.py::test_crud_operations PASSED                                                                                                                            [100%]
+
+============================================================================== FAILURES ===============================================================================
+_____________________________________________________________________ test_delete_nonexistent_pet _____________________________________________________________________
+
+    @pytest.mark.negative
+    def test_delete_nonexistent_pet():
+        """Тест удаления несуществующего питомца."""
+        non_existent_pet_id = 999999
+        response = delete_pet(non_existent_pet_id)
+>       assert response.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <Response [200]>.status_code
+
+main.py:155: AssertionError
+________________________________________________________________________ test_upload_pet_image ________________________________________________________________________
+
+    @pytest.mark.positive
+    def test_upload_pet_image():
+        """Тест загрузки изображения для питомца."""
+        # Создаем питомца
+        pet_data = {
+            "id": 999,
+            "name": "TestPet",
+            "category": {"id": 1, "name": "Dogs"},
+            "photoUrls": ["http://example.com/photo"],
+            "tags": [{"id": 1, "name": "tag1"}],
+            "status": "available"
+        }
+        create_response = create_pet(pet_data)
+        assert create_response.status_code == 200
+    
+        # Загружаем изображение
+        pet_id = pet_data["id"]
+>       response = upload_pet_image(pet_id)
+
+main.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pet_id = 999, file_path = 'test_image.jpg'
+
+    def upload_pet_image(pet_id, file_path="test_image.jpg"):
+        """Загружает изображение для питомца через POST /pet/{petId}/uploadImage."""
+>       files = {"file": open(file_path, "rb")}
+E       FileNotFoundError: [Errno 2] No such file or directory: 'test_image.jpg'
+
+main.py:37: FileNotFoundError
+========================================================================== warnings summary ===========================================================================
+main.py:42
+  /Users/kir/PycharmProjects/pub/main.py:42: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:57
+  /Users/kir/PycharmProjects/pub/main.py:57: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:78
+  /Users/kir/PycharmProjects/pub/main.py:78: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:85
+  /Users/kir/PycharmProjects/pub/main.py:85: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:106
+  /Users/kir/PycharmProjects/pub/main.py:106: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:127
+  /Users/kir/PycharmProjects/pub/main.py:127: PytestUnknownMarkWarning: Unknown pytest.mark.negative - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.negative
+
+main.py:142
+  /Users/kir/PycharmProjects/pub/main.py:142: PytestUnknownMarkWarning: Unknown pytest.mark.negative - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.negative
+
+main.py:150
+  /Users/kir/PycharmProjects/pub/main.py:150: PytestUnknownMarkWarning: Unknown pytest.mark.negative - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.negative
+
+main.py:158
+  /Users/kir/PycharmProjects/pub/main.py:158: PytestUnknownMarkWarning: Unknown pytest.mark.positive - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.positive
+
+main.py:180
+  /Users/kir/PycharmProjects/pub/main.py:180: PytestUnknownMarkWarning: Unknown pytest.mark.e2e - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.e2e
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================================================================= short test summary info =======================================================================
+FAILED main.py::test_delete_nonexistent_pet - assert 200 == 404
+FAILED main.py::test_upload_pet_image - FileNotFoundError: [Errno 2] No such file or directory: 'test_image.jpg'
+============================================================== 2 failed, 8 passed, 10 warnings in 15.29s ==============================================================
